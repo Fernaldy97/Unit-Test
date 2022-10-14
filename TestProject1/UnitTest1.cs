@@ -62,11 +62,11 @@ namespace TestProject1
         [TestMethod]
         public void TestMethod2()
         {
-            var eventChecker = new Calendar.EventChecker(new Calendar.FakeDateTimeProvider(new DateTime(2021, 4, 4)));
+            var eventChecker = new Calendar.EventChecker(new Calendar.FakeDateTimeProvider(new DateTime(2022, 10, 8)));
 
             var result = eventChecker.CanScheduleEvent();
 
-            Assert.IsFalse(result);
+            Assert.IsTrue(result);
         }
 
     }
