@@ -11,38 +11,19 @@ namespace TestProject1
             Assert.AreEqual(Program.addNumbers(2, 3), 5);
         }
         
-        public interface ITimeProvider {
-        DateTime Now { get; }
+    public static class SystemTime
+    {
+        public static Func<DateTime> Now = () => DateTime.Now;
     }
-
-    public class SystemTimeProvider : ITimeProvider {
-        public virtual DateTime Now { get { return DateTime.Now; } }
-    }
-
-    public class MockTimeProvider : ITimeProvider {
-        public virtual DateTime Now { get; set; }
-    }
-
-    public class ServiceThatDependsOnTime {
-        protected virtual ITimeProvider { get; set; }
-        public ServiceThatDependsOnTime(ITimeProvider timeProvider) {
-            TimeProvider = timeProvider;
-        }
-        public virtual void DoSomeTimeDependentOperation() {
-            var now = TimeProvider.Now;
-            //use 'now' in some complex processing.
-        }
-    }
-
 
         [TestMethod]
         public void TestMethod2()
         {
-            var time = new MockTimeProvider();
-            time.Now = DateTime.Now.AddDays(-500);
-            var service = new ServiceThatDependsOnTime(time);
-            service.DoSomeTimeDependentOperation();
-            //check that the service did it right.
+            SystemTime.Now = () => new DateTime(2000,1,1);
+            repository.ResetFailures(failedMsgs); 
+            SystemTime.Now = () => new DateTime(2000,1,2);
+            var msgs = repository.GetAllReadyMessages(); 
+            Assert.AreEqual(2, msgs.Length);
         }
 
     }
