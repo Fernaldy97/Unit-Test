@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+//DI-Container registration
+services.AddScoped<DateTimeProvider>();
 //DateTimeProvider implementation
 public class DateTimeProvider
 {
@@ -11,8 +12,7 @@ public class DateTimeProvider
     public DateTime Now => _dateTime ?? DateTime.Now;
 }
 
-//DI-Container registration
-services.AddScoped<DateTimeProvider>();
+
 
 //DateTimeProvider usage in app logic
 public class User
@@ -40,9 +40,8 @@ namespace TestProject1
         [TestMethod]
         public void TestMethod2()
         {
-            User user = new User(new FixedDateTimeProvider(new DateTime(2021, 07, 20)));
-
-            Assert.Equal(new DateTime(2021, 07, 20), user.CreatedAt);
+           User user = new User(new FixedDateTimeProvider(new DateTime(2021, 07, 20)));
+           Assert.Equal(new DateTime(2021, 07, 20), user.CreatedAt);
         }
 
     }
