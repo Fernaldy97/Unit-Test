@@ -66,7 +66,7 @@ namespace TestProject1
 
             var result = eventChecker.CanScheduleEvent();
 
-            Assert.IsTrue(result);
+            Assert.IsFalse(result);
         }
 
     }
