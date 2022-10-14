@@ -1,41 +1,30 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-//Interface
-public interface IDateTimeProvider
+//DateTimeProvider implementation
+public class DateTimeProvider
 {
-    DateTime GetNow();
-}
+    private readonly DateTime? _dateTime = null;
 
-//Implementation with real DateTime.Now
-public class DateTimeProvider : IDateTimeProvider
-{
-    public DateTime GetNow() => DateTime.Now;
+    public DateTimeProvider(DateTime fixedDateTime)
+        => _dateTime = fixedDateTime;
+
+    public DateTime Now => _dateTime ?? DateTime.Now;
 }
 
 //DI-Container registration
-services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+services.AddScoped<DateTimeProvider>();
 
-//App logic 
+//DateTimeProvider usage in app logic
 public class User
 {
-    public User(IDateTimeProvider dateTimeProvider)
-    { 
-        CreatedAt = dateTimeProvider.GetNow();
+    public User(DateTimeProvider dateTimeProvider)
+    {
+        CreatedAt = dateTimeProvider.Now;
     }
 
     public DateTime CreatedAt { get; }
 }
 
-//FixedDateTimeProvider implementation for unit tests
-public class FixedDateTimeProvider : IDateTimeProvider
-{
-    private DateTime _fixedDateTime;
-
-    public FixedDateTimeProvider(DateTime fixedDateTime)
-        => _fixedDateTime = fixedDateTime;
-
-    public DateTime GetNow() => _fixedDateTime;
-}
 
 namespace TestProject1
 {
